@@ -1,6 +1,8 @@
 #!/bin/bash -e
 
-bumpType=$1
+bump_type=$1
+ref_branch=$2
+force_push=$3
 
 runner () {
     echo "🟡 starting $@"
@@ -25,7 +27,7 @@ git reset --hard
 
 VERSION=`hatch version`
 
-case $bumpType in
+case $bump_type in
 
     'release')
         hatch version release;;
@@ -60,16 +62,16 @@ if [ "$VERSION" != "$NEW_VERSION" ]; then
 
     echo "🟢 Success version push"
 
-    echo "GITHUB_ACTOR $GITHUB_ACTOR"
-    echo "GITHUB_REF $GITHUB_REF"
-    echo "GITHUB_HEAD_REF $GITHUB_HEAD_REF"
-    echo "GITHUB_BASE_REF $GITHUB_BASE_REF"
-    echo "GITHUB_REF_NAME $GITHUB_REF_NAME"
-    echo "GITHUB_WORKSPACE $GITHUB_WORKSPACE"
-    echo "GITHUB_ENV $GITHUB_ENV"
+    if [ "$force_push" = true ]; then
+        PUSH_FLAGS="--force"
+    else
+        PUSH_FLAGS=""
+    fi
 
-    if [ -n "$GITHUB_HEAD_REF" ]; then
-        git push origin HEAD:$GITHUB_HEAD_REF
+    if [ -n "$ref_branch" ]; then
+        git push $PUSH_FLAGS origin HEAD:$ref_branch
+    elif [ -n "$GITHUB_HEAD_REF" ]; then
+        git push $PUSH_FLAGS origin HEAD:$GITHUB_HEAD_REF
     else
         git push
     fi

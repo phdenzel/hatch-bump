@@ -4,15 +4,27 @@ name: hatch-bump
 description: Bumps hatch projects in CI
 
 inputs:
-  bump-type:
+  type:
     description: "Type of the hatch version bump"
     type: string
     default: "dev"
+    required: false
+  ref:
+    description: ""
+    type: string
+    default: ""
+    required: false
+  force:
+    description: "Force push the version bump"
+    type: boolean
+    default: false
     required: false
 
 runs:
   using: "docker"
   image: "Dockerfile"
   args:
-    - ${{ inputs.bump-type }}
+    - ${{ inputs.type }}
+    - ${{ inputs.ref }}
+    - ${{ inputs.force }}
 
