@@ -1,0 +1,18 @@
+#
+
+name: hatch-bump
+description: Bumps hatch projects in CI
+
+inputs:
+  bump-type:
+    description: "Type of the hatch version bump"
+    type: string
+    default: "dev"
+    required: false
+
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.bump-type }}
+
