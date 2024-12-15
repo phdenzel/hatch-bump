@@ -1,5 +1,10 @@
 #!/bin/bash -e
 
+set -x
+
+set -Eeuo pipefail
+
+
 bump_type=$1
 ref_branch=$2
 force_push=$3
@@ -69,11 +74,12 @@ if [ "$VERSION" != "$NEW_VERSION" ]; then
     fi
 
     if [ -n "$ref_branch" ]; then
+        
         git push $PUSH_FLAGS origin HEAD:$ref_branch
     elif [ -n "$GITHUB_HEAD_REF" ]; then
         git push $PUSH_FLAGS origin HEAD:$GITHUB_HEAD_REF
     else
-        git push
+        git $PUSH_FLAGS push
     fi
 fi
 
