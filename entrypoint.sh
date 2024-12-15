@@ -11,8 +11,8 @@ if [[ -n "$GITHUB_WORKSPACE" ]]; then
     git config --global --add safe.directory $GITHUB_WORKSPACE
 fi
 
-git config --global user.name ${GITHUB_ACTOR}
-git config --global user.email "hatchbump[bot]@users.noreply.github.com"
+git config --global user.name $GITHUB_ACTOR
+git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
 
 if [ -n "$(git status --porcelain)" ]; then
     # Working directory clean
@@ -60,6 +60,7 @@ if [ "$VERSION" != "$NEW_VERSION" ]; then
 
     echo "🟢 Success version push"
 
+    echo "GITHUB_ACTOR $GITHUB_ACTOR"
     echo "GITHUB_REF $GITHUB_REF"
     echo "GITHUB_HEAD_REF $GITHUB_HEAD_REF"
     echo "GITHUB_BASE_REF $GITHUB_BASE_REF"
