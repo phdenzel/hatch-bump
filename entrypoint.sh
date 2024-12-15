@@ -21,6 +21,7 @@ if [ -n "$(git status --porcelain)" ]; then
     exit 1
 fi
 
+git reset --hard
 
 VERSION=`hatch version`
 
