@@ -60,7 +60,18 @@ if [ "$VERSION" != "$NEW_VERSION" ]; then
 
     echo "🟢 Success version push"
 
+    echo "GITHUB_REF $GITHUB_REF"
+    echo "GITHUB_HEAD_REF $GITHUB_HEAD_REF"
+    echo "GITHUB_BASE_REF $GITHUB_BASE_REF"
+    echo "GITHUB_REF_NAME $GITHUB_REF_NAME"
+    echo "GITHUB_WORKSPACE $GITHUB_WORKSPACE"
+    echo "GITHUB_ENV $GITHUB_ENV"
+
     git push
 fi
 
 exit 0
+
+b6922077637b3a5e2f6d1cc1f6952b167e6cfd33
+
+5f0fd59fbf8092c82de51981db3d27023ba3fe81
