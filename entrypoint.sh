@@ -67,11 +67,11 @@ if [ "$VERSION" != "$NEW_VERSION" ]; then
     echo "GITHUB_WORKSPACE $GITHUB_WORKSPACE"
     echo "GITHUB_ENV $GITHUB_ENV"
 
-    git push
+    if [ -n "$GITHUB_HEAD_REF" ]; then
+        git push origin HEAD:$GITHUB_HEAD_REF
+    else
+        git push
+    fi
 fi
 
 exit 0
-
-b6922077637b3a5e2f6d1cc1f6952b167e6cfd33
-
-5f0fd59fbf8092c82de51981db3d27023ba3fe81
