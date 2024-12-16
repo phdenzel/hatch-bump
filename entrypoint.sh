@@ -61,7 +61,7 @@ NEW_VERSION=`hatch version`
 
 if [ -n "$github_token" ]; then
     curl --request GET \
-         --url "https://api/github.com/repos/${GITHUB_REPOSITORY}" \
+         --url "https://api.github.com/repos/${GITHUB_REPOSITORY}" \
          --header "Authorization: token $github_token"
 fi
 
