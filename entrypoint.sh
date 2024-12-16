@@ -1,6 +1,5 @@
 #!/bin/bash -e
 
-set -x
 
 set -Eeuo pipefail
 
@@ -27,11 +26,10 @@ if [ -n "$(git status --porcelain)" ]; then
     echo "🔴 There are uncommitted changes, exiting"
     exit 1
 fi
-
 git reset --hard
 
+# Bump version
 VERSION=`hatch version`
-
 case $bump_type in
 
     'release')
@@ -55,10 +53,9 @@ case $bump_type in
     *)
         echo "🔵 Skipped Version Bump";;
 esac
-
 NEW_VERSION=`hatch version`
 
-
+# Authenticate
 if [ -n "$github_token" ]; then
     curl --request GET \
          --url "https://api.github.com/repos/${GITHUB_REPOSITORY}" \
@@ -69,20 +66,21 @@ fi
 if [ "$VERSION" != "$NEW_VERSION" ]; then
     echo "🟢 Success: bump version: $VERSION → $NEW_VERSION"
 
+    # Commit the new version
     git add .
     git commit -m "Bump version: $VERSION → $NEW_VERSION"
     git remote -v
-
     echo "🟢 Success version push"
 
+    # Force push?
     if [ "$force_push" = true ]; then
         PUSH_FLAGS="--force-with-lease"
     else
         PUSH_FLAGS=""
     fi
 
+    # Push
     if [ -n "$ref_branch" ]; then
-        
         git push origin HEAD:$ref_branch $PUSH_FLAGS
     elif [ -n "$GITHUB_HEAD_REF" ]; then
         git push origin HEAD:$GITHUB_HEAD_REF $PUSH_FLAGS
