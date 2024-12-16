@@ -27,6 +27,11 @@ inputs:
     type: boolean
     default: false
     required: false
+  tag:
+    description: "Tag the new commit"
+    type: boolean
+    default: true
+    required: false
 
 runs:
   using: "docker"
@@ -36,3 +41,4 @@ runs:
     - ${{ inputs.ref }}
     - ${{ inputs.github-token }}
     - ${{ inputs.force }}
+    - ${{ inputs.tag }}

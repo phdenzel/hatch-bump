@@ -7,6 +7,7 @@ bump_type=$1
 ref_branch=$2
 github_token=$3
 force_push=$4
+tag_commit=$5
 
 runner () {
     echo "🟡 starting $@"
@@ -69,6 +70,9 @@ if [ "$VERSION" != "$NEW_VERSION" ]; then
     # Commit the new version
     git add .
     git commit -m "Bump version: $VERSION → $NEW_VERSION"
+    if [ "$tag_commit" = true ]; then
+        git tag v$NEW_VERSION
+    fi
     git remote -v
     echo "🟢 Success version push"
 
@@ -86,6 +90,9 @@ if [ "$VERSION" != "$NEW_VERSION" ]; then
         git push origin HEAD:$GITHUB_HEAD_REF $PUSH_FLAGS
     else
         git push $PUSH_FLAGS
+    fi
+    if [ "$tag_commit" = true ]; then
+        git push --tags
     fi
 fi
 
