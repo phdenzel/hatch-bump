@@ -1,4 +1,18 @@
-#
+# Action running hatch version bump on checkout repository
+#   Usage in a workflow yaml file:
+#   - uses: actions/checkout@v4
+#     with:
+#       ref: ${{ github.base_ref }}
+#       fetch-depth: 0
+#       token: ${{ secrets.READ_WRITE_PAT }}
+#   - uses: phdenzel/hatch-bump@v1.1.0-dev3
+#     with:
+#       type: "micro"
+#       ref: ${{ github.base_ref }}
+#       github-token: ${{ secrets.READ_WRITE_PAT }}
+#       tag: true
+#       force: true
+
 
 name: hatch-bump
 description: Bumps hatch projects in CI
