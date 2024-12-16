@@ -4,10 +4,10 @@ set -x
 
 set -Eeuo pipefail
 
-
 bump_type=$1
 ref_branch=$2
-force_push=$3
+github_token=$3
+force_push=$4
 
 runner () {
     echo "🟡 starting $@"
@@ -58,6 +58,14 @@ esac
 
 NEW_VERSION=`hatch version`
 
+
+if [ -n "$github_token" ]; then
+    curl --request GET \
+         --url "https://api/github.com/repos/${GITHUB_REPOSITORY}" \
+         --header "Authorization: token $github_token"
+fi
+
+
 if [ "$VERSION" != "$NEW_VERSION" ]; then
     echo "🟢 Success: bump version: $VERSION → $NEW_VERSION"
 
@@ -68,18 +76,18 @@ if [ "$VERSION" != "$NEW_VERSION" ]; then
     echo "🟢 Success version push"
 
     if [ "$force_push" = true ]; then
-        PUSH_FLAGS="--force"
+        PUSH_FLAGS="--force-with-lease"
     else
         PUSH_FLAGS=""
     fi
 
     if [ -n "$ref_branch" ]; then
         
-        git push $PUSH_FLAGS origin HEAD:$ref_branch
+        git push origin HEAD:$ref_branch $PUSH_FLAGS
     elif [ -n "$GITHUB_HEAD_REF" ]; then
-        git push $PUSH_FLAGS origin HEAD:$GITHUB_HEAD_REF
+        git push origin HEAD:$GITHUB_HEAD_REF $PUSH_FLAGS
     else
-        git $PUSH_FLAGS push
+        git push $PUSH_FLAGS
     fi
 fi
 

@@ -2,6 +2,10 @@
 
 name: hatch-bump
 description: Bumps hatch projects in CI
+author: phdenzel
+branding:
+  icon: arrow-up-circle
+  color: gray-dark
 
 inputs:
   type:
@@ -14,8 +18,12 @@ inputs:
     type: string
     default: ""
     required: false
+  github-token:
+    description: "GitHub or personal access token"
+    default: ${{ github.token }}
+    required: false
   force:
-    description: "Force push the version bump"
+    description: "Force push (with lease) the version bump"
     type: boolean
     default: false
     required: false
@@ -26,5 +34,5 @@ runs:
   args:
     - ${{ inputs.type }}
     - ${{ inputs.ref }}
+    - ${{ inputs.github-token }}
     - ${{ inputs.force }}
-

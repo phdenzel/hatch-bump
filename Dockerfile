@@ -14,6 +14,7 @@ ENV PYTHONPATH "/root/.local/lib/python3.12/site-packages"
 
 RUN apt update && apt install -y \
     wget \
+    curl \
     && out=$(mktemp) \
     && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
     && cat $out | tee /usr/share/keyrings/githubcli-archive-keyring.gpg > /dev/null \
